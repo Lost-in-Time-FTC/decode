@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;//funny alex addition
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,10 @@ public class Hardware {
     public DcMotor outtakeL;
     public DcMotor outtakeR;
     public List<DcMotor> outtakeMotors;
-    public Servo outtakeFeeder;
+    public CRServo outtakeFeeder;
+    public VoltageSensor myControlHubVoltageSensor;//funny alex addition
+
+
     public DcMotor intake;
 
     public Hardware(HardwareMap hardwareMap) {
@@ -27,10 +31,14 @@ public class Hardware {
         bL = hardwareMap.get(DcMotor.class, "bL");
         driveMotors = Arrays.asList(fR, fL, bR, bL);
         outtakeL = hardwareMap.get(DcMotor.class, "outtakeL");
+        outtakeL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         outtakeR = hardwareMap.get(DcMotor.class, "outtakeR");
+        outtakeR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         outtakeMotors = Arrays.asList(outtakeL, outtakeR);
         intake = hardwareMap.get(DcMotor.class, "intake");
-        outtakeFeeder = hardwareMap.get(Servo.class, "outtakeFeeder");
+        outtakeFeeder = hardwareMap.get(CRServo.class, "outtakeFeeder");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -42,6 +50,8 @@ public class Hardware {
         outtakeL.setDirection(DcMotor.Direction.REVERSE);
         outtakeR.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.FORWARD);
+
+        myControlHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");//funny alex addition
     }
 
     public void moveForward(double power) {
@@ -84,6 +94,21 @@ public class Hardware {
         bR.setPower(-power);
         fL.setPower(power);
         bL.setPower(power);
+    }
+
+    public final void feedOuttake(double power) {
+        outtakeFeeder.setPower(power);
+    }
+    //NEGATIVE IS INTAKE
+
+    public final void runOuttake() {
+        outtakeL.setPower(0.8);
+        outtakeR.setPower(1);
+    }
+
+    public final void stopOuttake() {
+        outtakeL.setPower(0);
+        outtakeR.setPower(0);
     }
 
     public final void stopDrive() {

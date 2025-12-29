@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.robot.opmode.teleop.subsystem.Outtake;
 @TeleOp(name = "Tele", group = "Iterative OpMode")
 public class Tele extends OpMode {
     private final ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime outtakeTime = new ElapsedTime();//altered with time
     private Hardware hardware;
     private Drive drive;
     private Intake intake;
@@ -43,7 +44,8 @@ public class Tele extends OpMode {
     @Override
     public void loop() {
         drive.run();
-        intake.run(previousGamepad2, currentGamepad2);
-        outtake.run();
+        //intake.run(previousGamepad2, currentGamepad2);
+        intake.run();
+        outtakeTime = outtake.run(outtakeTime);//altered with time
     }
 }
