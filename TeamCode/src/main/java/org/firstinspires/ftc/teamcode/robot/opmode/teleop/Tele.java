@@ -43,6 +43,7 @@ public class Tele extends OpMode {
 
     @Override
     public void loop() {
+        //drive.run(previousGamepad2, currentGamepad2);
         drive.run();
         //intake.run(previousGamepad2, currentGamepad2);
         intake.run();

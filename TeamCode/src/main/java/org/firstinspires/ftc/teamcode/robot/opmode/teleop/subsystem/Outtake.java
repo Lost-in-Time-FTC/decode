@@ -30,8 +30,8 @@ public class Outtake {
         telemetry.addData("encoder", currentPos);
         telemetry.update();
         if (gamepad2.x) {
-            hardware.outtakeL.setPower(1);
-            hardware.outtakeR.setPower(0.8);
+            hardware.outtakeL.setPower(-0.8);
+            hardware.outtakeR.setPower(-1);
             //hardware.outtakeR.setPower(1);
         }
         else if (gamepad2.y) {
